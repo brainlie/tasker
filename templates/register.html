@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block head %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.roundbox{
+  border-radius: 25px;
+}
+
+.submit{
+  margin: 10px;
+  width: 100px;
+}
+
+.textbox{
+  width: 200%;
+  padding: 5px;
+  margin: 5px;
+  padding-left: 10px;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class="container center" style="height: 100vh">
+        <h1><span style="font-size:200%; color:white;">Create Account</span></h1>
+        <form action="/register" method="POST" class="center">
+            <input name="name" placeholder="Full Name" type="text" class="roundbox textbox" autocomplete="off"><br>
+            <input name="username" placeholder="Username" type="text" class="roundbox textbox" autocomplete="off"><br>
+            <input name="password" placeholder="Password" type="password" class="roundbox textbox" autocomplete="off"><br>
+            <input name="password2" placeholder="Confirm Your Password" type="password" class="roundbox textbox" autocomplete="off"><br>
+            <button type="submit" class="roundbox submit">Sign Up</button>
+        </form>
+    </div>
+{% endblock %}

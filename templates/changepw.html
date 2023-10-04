@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block title %} Change Password {% endblock %}
+
+{% block head %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.submit{
+  margin: 10px;
+  width: 100px;
+}
+
+.textbox{
+  width: 150%;
+  padding: 5px;
+  margin: 5px;
+  padding-left: 10px;
+}
+
+.white{
+  color:white;
+  text-align:right;
+}
+
+</style>
+
+{% endblock %}
+
+{% block main %}
+    <div class="container center" style="height: 100vh">
+          <form action="/changepw" method="POST" class="center">
+            <table>
+              <tr>
+                <th colspan="2" style="padding-left:300px"><h1 class="white" style="font-size:250%; text-align:center">Change Password</h1></th>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Full Name:</p></td>
+                <td><input name="name" type="text" class="textbox" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Username:</p></td>
+                <td><input name="username" type="text" class="textbox" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">New Password:</p></td>
+                <td><input name="password" type="password" class="textbox" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Confirm New Password:</p></td>
+                <td><input name="cfm_password" type="password" class="textbox" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><input type="submit" value="Change Password" style="margin-left:50%"></td>
+              </tr>
+            </table>
+          </form>
+    </div>
+{% endblock %}

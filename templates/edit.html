@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block head %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.submit{
+  margin: 10px;
+  width: 100px;
+}
+
+.textbox{
+  width: 150%;
+  padding: 5px;
+  margin: 5px;
+  padding-left: 10px;
+}
+
+.white{
+  color:white;
+}
+
+</style>
+
+<script>
+
+</script>
+{% endblock %}
+
+{% block main %}
+    <div class="container center" style="height: 100vh">
+          <form action="/edit" method="POST" class="center">
+            <input name="task_id" type="hidden" value="{{task_id}}">
+            <table>
+              <tr>
+                <th colspan="2" style="padding-left:300px"><h1 class="white" style="font-size:250%; text-align:center">{{ action }} Task</h1></th>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Task:</p></td>
+                <td><input name="new_task" placeholder="Task" type="text" class="textbox" value="{{task}}" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Due Date:</p></td>
+                <td><input name="new_date" placeholder="YYYY-MM-DD" type="text" class="textbox" value="{{date}}" required autocomplete="off"><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Status:</p></td>
+                <td><select name="new_status" placeholder="Status" class="textbox" required autocomplete="off">
+                  <option>Not Started</option>
+                  <option>Ongoing</option>
+                  <option>Stuck</option>
+                  <option>Completed</option><td>
+              </tr>
+              <tr>
+                <td><p class="white mt-3">Importance:</p></td>
+                <td><input name="new_importance" type="number" class="textbox" min="1" max="5" required autocomplete="off" value="{{importance}}"><td>
+              </tr>
+              {% if recipient != name %}
+              <tr>
+                <td><p class="white mt-3">Recipient:</p></td>
+                <td><select name="new_recipient" placeholder="Given To" class="textbox" required autocomplete="off">
+                  {% for name in names %}
+                  <option>{{ name.name }}</option>
+                  {% endfor %}<td>
+              </tr>
+              {% endif %}
+              <tr>
+                <td></td>
+                <td><input type="submit" value={{action}} style="margin-left:50%"></td>
+                {% if action == "Edit" and recipient != name %}
+                <td><input type="hidden" value="second" name="order"></td>
+                {% elif action == "Edit" and recipient == name %}
+                <td><input type="hidden" value="fourth" name="order"></td>
+                {% elif action == "Add" %}
+                <td><input type="hidden" value="third" name="order"></td>
+                {% endif %}
+              </tr>
+            </table>
+          </form>
+    </div>
+{% endblock %}

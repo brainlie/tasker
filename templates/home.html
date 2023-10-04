@@ -1,0 +1,153 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block head %}
+<style>
+.table{
+    background-color:#424a52;
+    color:white;
+}
+
+.container{
+    padding-top:2%;
+}
+
+.text{
+    float:left;
+    color:white;
+}
+
+th{
+    cursor:pointer;
+}
+
+.status{
+    font-weight:bold;
+    color:black;
+}
+</style>
+
+<script>
+//Script for arranging table
+window.onload=function(){const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+// do the work...
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+    const table = th.closest('table');
+    Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => table.appendChild(tr) );
+})));}
+</script>
+
+{% endblock %}
+
+{% block main %}
+    <div class="container" style="height:100vh">
+        <div class="row">
+            <h1 class="text"><span style="font-size:200%; color:#317bb0; float:left">Hello, {{name}}!</span></h1>
+        </div>
+        <div class="container">
+            <p class="text"><span style="font-size:200%">Tasks Received</span></p>
+            <table class="table">
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Importance</th>
+                    <th>Sender</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <!-- Setting background color of status box to respective colors -->
+                {% for tasks in tasks %}
+                <tr>
+                    <td>{{ tasks.task }}</td>
+                    <td>{{ tasks.due }}</td>
+                    {% if tasks.status == "Ongoing" %}
+                    <td style="background-color:yellow" class="status">{{ tasks.status }}</td>
+                    {% elif tasks.status == "Stuck" %}
+                    <td style="background-color:red" class="status">{{ tasks.status }}</td>
+                    {% elif tasks.status == "Completed" %}
+                    <td style="background-color:Green" class="status">{{ tasks.status }}</td>
+                    {% else %}
+                    <td>{{ tasks.status }}</td>
+                    {% endif %}
+                    <td>{{ tasks.importance }} / 5</td>
+                    <td>{{ tasks.sender }}</td>
+                    <td>
+                        <form method="POST" action="/edit">
+                            <input type="hidden" value="{{ tasks.task }}" name="task">
+                            <input type="hidden" value="{{ tasks.importance }}" name="importance">
+                            <input type="hidden" value="{{ tasks.id }}" name="id">
+                            <input type="hidden" value="{{ tasks.due }}" name="date">
+                            <input type="hidden" value="{{ tasks.recipient }}" name="recipient">
+                            <input type="hidden" value="first" name="order">
+                            <input type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="/remove">
+                            <input type="hidden" value="{{ tasks.id }}" name="id">
+                            <input type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="container">
+            <p class="text"><span style="font-size:200%; text-align:left">Tasks Given</span></p>
+            <table class="table">
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Importance</th>
+                    <th>Recipient</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for tasks in tasks_given %}
+                <tr>
+                    <td>{{ tasks.task }}</td>
+                    <td>{{ tasks.due }}</td>
+                    {% if tasks.status == "Ongoing" %}
+                    <td style="background-color:yellow" class="status">{{ tasks.status }}</td>
+                    {% elif tasks.status == "Stuck" %}
+                    <td style="background-color:red" class="status">{{ tasks.status }}</td>
+                    {% elif tasks.status == "Completed" %}
+                    <td style="background-color:Green" class="status">{{ tasks.status }}</td>
+                    {% else %}
+                    <td>{{ tasks.status }}</td>
+                    {% endif %}
+                    <td>{{ tasks.importance }} / 5</td>
+                    <td>{{ tasks.recipient }}</td>
+                    <td>
+                        <form method="POST" action="/edit">
+                            <input type="hidden" value="{{ tasks.task }}" name="task">
+                            <input type="hidden" value="{{ tasks.importance }}" name="importance">
+                            <input type="hidden" value="{{ tasks.id }}" name="id">
+                            <input type="hidden" value="{{ tasks.due }}" name="date">
+                            <input type="hidden" value="first" name="order">
+                            <input type="submit" value="Edit">
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="/remove">
+                            <input type="hidden" value="{{ tasks.id }}" name="id">
+                            <input type="submit" value="Remove">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

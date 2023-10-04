@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %} Error {% endblock %}
+
+{% block head %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  flex-direction: column;
+
+}
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class="container center" style="color:white">
+        <h1><span style="font-size:500%">Error!</span></h1>
+        <p> {{ error }} </p>
+    </div>
+{% endblock %}

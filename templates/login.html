@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block title %} Log In {% endblock %}
+
+{% block head %}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  padding: 10px;
+  height: 100vh;
+}
+
+.left {
+  width: 70%;
+  background-color:white;
+}
+
+.right {
+  width: 30%;
+  background-color:#03fca9;
+  color:lightgray;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.roundbox{
+  border-radius: 25px;
+}
+
+.submit{
+  margin:10px;
+  width: 150px;
+}
+
+.textbox{
+  width: 200%;
+  padding: 5px;
+  margin:10px;
+  padding-left: 10px;
+}
+
+.gray{
+  color:gray;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="column left">
+            <div class="center" style="height:100vh">
+              <h1><span style="font-size:200%; padding-bottom:50px">Login to Your Account</span></h1>
+              <form action="/login" method="POST" class="center">
+                  <input name="username" type="text" placeholder="Username" class="roundbox textbox" autocomplete="off"><br>
+                  <input name="password" type="password" placeholder="Password" class="roundbox textbox"><br>
+                  <button type="submit" class="roundbox submit">Sign In</button>
+              </form>
+              <button type="submit" class="roundbox submit"><a href="/changepw" style="text-decoration:none; color:black">Forgot Password?</a></button>
+            </div>
+
+        </div>
+
+        <div class="column right">
+          <div class="center" style="height:100vh">
+            <h1><span style="font-size:200%" class="gray">New?</span></h1>
+            <h5 class="gray">Sign Up Now!</h5>
+              <a href="/register" style="background-color:gray; padding:5px; color:white; text-decoration:none" class="roundbox submit">Sign Up</a>
+          </div>
+        </div>
+    </div>
+{% endblock %}

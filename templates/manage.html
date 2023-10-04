@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %} Manage {% endblock %}
+
+{% block head %}
+<style>
+.column{
+    float:left;
+    height:100vh;
+}
+
+.left{
+    width:80%;
+}
+
+.right{
+    width:20%;
+}
+
+.text{
+    color:white;
+    float:left;
+}
+
+.table{
+    background-color:#424a52;
+    color:white;
+}
+
+th{
+    cursor:pointer;
+}
+
+.status{
+    font-weight:bold;
+    color:black;
+}
+
+</style>
+
+<script>
+//Script for arranging table
+window.onload=function(){const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+
+const comparer = (idx, asc) => (a, b) => ((v1, v2) =>
+    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
+    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
+
+// do the work...
+document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
+    const table = th.closest('table');
+    Array.from(table.querySelectorAll('tr:nth-child(n+2)'))
+        .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
+        .forEach(tr => table.appendChild(tr) );
+})));}
+</script>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="column left" style="padding-top:5%">
+                <p class="text"><span style="font-size:200%">Tasks</span></p>
+                <table class="table">
+                    <tr>
+                        <th>Task</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Importance</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                    </tr>
+                    <!-- Setting background color of status box to respective colors -->
+                    {% for tasks in tasks %}
+                    <tr>
+                        <td>{{ tasks.task }}</td>
+                        <td>{{ tasks.due }}</td>
+                        {% if tasks.status == "Ongoing" %}
+                        <td style="background-color:yellow;" class="status">{{ tasks.status }}</td>
+                        {% elif tasks.status == "Stuck" %}
+                        <td style="background-color:red" class="status">{{ tasks.status }}</td>
+                        {% elif tasks.status == "Completed" %}
+                        <td style="background-color:green" class="status">{{ tasks.status }}</td>
+                        {% else %}
+                        <td>{{ tasks.status }}</td>
+                        {% endif %}
+                        <td>{{ tasks.importance }} / 5</td>
+                        <td>{{ tasks.sender }}</td>
+                        <td>{{ tasks.recipient }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <div class="column right" style="padding-top:5%">
+                <h1><span class="text">Search User</span></h1>
+                <form action="/view" method="POST" style="float:left">
+                    <select name="name" style="padding-right:50px">
+                        {% for name in names %}
+                        <option>{{ name.name }}</option>
+                        {% endfor %}
+                        <input type="submit" style="font-size:85%; margin-left: 10px">
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "layout.html" %}
+
+{% block title %} Manage {% endblock %}
+
+{% block head %}
+<style>
+.text{
+    color:white;
+    text-align:left;
+}
+
+.table{
+    background-color:#424a52;
+    color:white;
+}
+
+.container{
+    height:100vh;
+}
+
+.status{
+    font-weight:bold;
+    color:black;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <h1 class="text"><span style="font-size:250%; color:#03fca9">{{ named }}'s Page</span></h1>
+        </div>
+
+
+        <div class="row">
+            <p class="text"><span style="font-size:200%">Tasks Received</span></p>
+            <table class="table">
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Importance</th>
+                    <th>Sender</th>
+                </tr>
+                <!-- Setting background color of status box to respective colors -->
+                {% for received in received %}
+                <tr>
+                    <td>{{ received.task }}</td>
+                    <td>{{ received.due }}</td>
+                    {% if received.status == "Ongoing" %}
+                    <td style="background-color:yellow" class="status">{{ received.status }}</td>
+                    {% elif received.status == "Stuck" %}
+                    <td style="background-color:red" class="status">{{ received.status }}</td>
+                    {% elif received.status == "Completed" %}
+                    <td style="background-color:green" class="status">{{ received.status }}</td>
+                    {% else %}
+                    <td>{{ received.status }}</td>
+                    {% endif %}
+                    <td>{{ received.importance }} / 5</td>
+                    <td>{{ received.sender }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="row" style="padding-top:5%">
+            <p class="text"><span style="font-size:200%">Tasks Given</span></p>
+            <table class="table">
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Importance</th>
+                    <th>Recipient</th>
+                </tr>
+                <!-- Setting background color of status box to respective colors -->
+                {% for given in given %}
+                <tr>
+                    <td>{{ given.task }}</td>
+                    <td>{{ given.due }}</td>
+                    {% if given.status == "Ongoing" %}
+                    <td style="background-color:yellow" class="status">{{ given.status }}</td>
+                    {% elif given.status == "Stuck" %}
+                    <td style="background-color:red" class="status">{{ given.status }}</td>
+                    {% elif given.status == "Completed" %}
+                    <td style="background-color:green" class="status">{{ given.status }}</td>
+                    {% else %}
+                    <td>{{ given.status }}</td>
+                    {% endif %}
+                    <td>{{ given.importance }} / 5</td>
+                    <td>{{ given.recipient }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
